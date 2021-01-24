@@ -222,7 +222,7 @@ const getPatient = (value, props) => {
 
 
 const getEverything = async (value) => {
-    await axios.get(`https://api.1up.health/fhir/dstu2/Patient/${value}/everything`, { headers: {"Authorization" : `Bearer ${token}`}})
+    await axios.get(`https://api.1up.health/fhir/dstu2/Patient/${value}/$everything`, { headers: {"Authorization" : `Bearer ${token}`}})
     .then((response) => {
          const data = response.data;
          console.log(response);
@@ -241,6 +241,7 @@ const getEverything = async (value) => {
         <Title>
         Create User
         </Title>
+        <Text><i>Start by creating a user to generate an auth code.</i></Text>
         <Search placeholder="Create a User" style={{ width: 1300, margin: '0 10px' }} onSearch={createUser} />
         <br/>
         <br/>
@@ -254,6 +255,7 @@ const getEverything = async (value) => {
         <Title>
         Get New Auth Code for an Existing User
         </Title>
+        <Text><i>Get a new auth code by username if the user already exists.</i></Text>
         <Search placeholder="Enter user name to get code" style={{ width: 1300, margin: '0 10px' }} onSearch={authUser} />
         <br/>
         <br/>
@@ -267,6 +269,7 @@ const getEverything = async (value) => {
         <Title>
         Get Token from Auth Code
         </Title>
+        <Text><i>Use the auth code generated above to generate a token that expires every hour.</i></Text>
         <Search placeholder="Enter code to get token" style={{ width: 1300, margin: '0 10px' }} onSearch={authToken} />
         <br/>
         <br/>
@@ -280,7 +283,7 @@ const getEverything = async (value) => {
         <Title>
         Create Patient
         </Title>
-        <Text>A patient needs to exist in the context of this API token to be retrievable from subsequent endpoints. Please create a patient here.</Text>
+        <Text><i>A patient needs to exist in the context of this API token to be retrievable from subsequent endpoints. Please create a patient here.</i></Text>
         <Search placeholder="Get a patient" style={{ width: 1300, margin: '0 10px' }} onSearch={createPatient} />
         <br/>
         <br/>
@@ -294,6 +297,7 @@ const getEverything = async (value) => {
         <Title>
         Get Patient
         </Title>
+        <Text><i>Return a patient that already exists in the context</i></Text>
         <Search placeholder="Get a patient" style={{ width: 1300, margin: '0 10px' }} onSearch={getPatient} />
         <br/>
         <br/>
@@ -307,6 +311,7 @@ const getEverything = async (value) => {
         <Title>
         Get Everything About a Patient
         </Title>
+        <Text><i>Return everything about a patient that already exists in the context. Use the patient ID, not name.</i></Text>
         <Search placeholder="Query Everything about a Patient" style={{ width: 1300, margin: '0 10px' }} onSearch={getEverything} />
         <br/>
         <br/>
