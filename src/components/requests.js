@@ -60,11 +60,41 @@ const onChange = () => console.log('cool');
 
 const Requests = () => {
 
-    const[code, setUserCode] = useState('');
+    //Create user state
+    const [user,setUser] = useState('');
     const [userData, setUserData] = useState([]);
 
+    //Code state
+    const[code, setUserCode] = useState('');
+    const [codeData, setCodeData] = useState([]);
 
     const createUser = async (value) => {
+        // Custom headers to avoid CORS issue
+        // I am also using the MOESIF Origin & CORS changer Chrome Extension
+       const config = {
+           headers: {
+             'Content-Type': 'application/json'
+           }
+         };
+
+       axios.post(`https://api.1up.health/user-management/v1/user`, {
+           "app_user_id": value,
+           "client_id": "dbb2e596333400b55c417c0a1ac5187a",
+           "client_secret": "e52c028bd69b7dcfa3587e343d87f13f"
+       }, 
+       config).then((response) => {
+           const data = response.data;
+           console.log(response);
+           setUser(data.app_user_id);
+           setUserData(data);
+           console.log(response);
+           console.log(user);
+           console.log(userData);
+       });
+   }
+
+
+    const authUser = async (value) => {
          // Custom headers to avoid CORS issue
          // I am also using the MOESIF Origin & CORS changer Chrome Extension
         const config = {
@@ -82,10 +112,10 @@ const Requests = () => {
             const data = response.data;
             const code = response.data.code;
             setUserCode(code);
-            setUserData(data);
+            setCodeData(data);
             console.log(response);
             console.log(code);
-            console.log(userData);
+            console.log(codeData);
 
         });
     }
@@ -98,12 +128,25 @@ const Requests = () => {
         <Title>
         Create User
         </Title>
-        <Search placeholder="Enter new user name" style={{ width: 800, margin: '0 10px' }} onSearch={createUser} />
+        <Search placeholder="Enter user name to get code" style={{ width: 800, margin: '0 10px' }} onSearch={createUser} />
         <br/>
         <br/>
         <br/>
         <Card>
         <JSONViewer json={userData}/>
+        </Card>
+        </Card>
+        <Card></Card>
+        <Card>
+        <Title>
+        Get Auth Code for an Existing User
+        </Title>
+        <Search placeholder="Enter user name to get code" style={{ width: 800, margin: '0 10px' }} onSearch={authUser} />
+        <br/>
+        <br/>
+        <br/>
+        <Card>
+        <JSONViewer json={codeData}/>
         </Card>
         </Card>
         <Card>
@@ -120,10 +163,6 @@ const Requests = () => {
         <Title>
         Everything Query
         </Title>            
-        <Text>
-        curl -X GET 'https://api.1up.health/fhir/{`r4`}/Patient/{`1d5e078b47ba`}/$everything' \
-        -H "Authorization: Bearer dad180fae9bec712cc116ea64627561c793586e3"
-        </Text>
         {/* <JSONViewer json={response}/> */}
         </Card>
         </div>
