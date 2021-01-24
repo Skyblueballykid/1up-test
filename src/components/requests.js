@@ -246,10 +246,11 @@ const getEverything = async (value) => {
         <Search placeholder="Create a User" style={{ width: 1300, margin: '0 10px' }} onSearch={createUser} />
         <br/>
         <br/>
-        <br/>
         <Card>
         <JSONViewer json={userData}/>
         </Card>
+        <br/>
+        <br/>
         </Card>
         
         <Card>
