@@ -3,12 +3,11 @@
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 import React, { useState, useEffect } from 'react';
-import { Collapse, Result, Cascader, Popover, Card, Col, Row, Input, Button, Radio } from 'antd';
-import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Card, Input} from 'antd';
 import axios from 'axios';
 import JSONViewer from 'react-json-viewer';
 import styled from 'styled-components';
-import { Link, BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Typography } from 'antd';
 // const { Title as BaseTitle, Text as BaseText } = Typography;
@@ -21,15 +20,14 @@ const Text = styled(Typography.Text)`
   font-size: 16px;
 `;
 
-const StyledDiv = styled.div`
-  min-height: 60vh;
-`;
-
 const { Search } = Input;
 
 // Hardcode for simplicity. Use env variables in production
 const CLIENT_ID = `dbb2e596333400b55c417c0a1ac5187a`;
 const CLIENT_SECRET = `e52c028bd69b7dcfa3587e343d87f13f`;
+
+// use cors anywhere heroku app to avoid CORS issues in dev
+const CORS_ANYWHERE_URL = `https://cors-anywhere.herokuapp.com/`;
 const ROOT_API_URL = `https://api.1up.health`;
 const FHIR_API_URL = `https://api.1up.health/fhir`;
 
@@ -63,16 +61,15 @@ const Requests = () => {
         localStorage.setItem('token', token);
     })
 
+    // Create a user in this context
     const createUser = async (value) => {
-        // Custom headers to avoid CORS issue
-        // I am also using the MOESIF Origin & CORS changer Chrome Extension
        const config = {
            headers: {
              'Content-Type': 'application/json'
            }
          };
 
-       await axios.post(`https://cors-anywhere.herokuapp.com/${ROOT_API_URL}/user-management/v1/user`, {
+       await axios.post(`${CORS_ANYWHERE_URL}${ROOT_API_URL}/user-management/v1/user`, {
            "app_user_id": value,
            "client_id": `${CLIENT_ID}`,
            "client_secret": `${CLIENT_SECRET}`
@@ -90,15 +87,13 @@ const Requests = () => {
 
    // Get a new auth code for an existing user
     const authUser = async (value) => {
-         // Custom headers to avoid CORS issue
-         // I am also using the MOESIF Origin & CORS changer Chrome Extension
         const config = {
             headers: {
               'Content-Type': 'application/json'
             }
           };
 
-        await axios.post(`https://cors-anywhere.herokuapp.com/${ROOT_API_URL}/user-management/v1/user/auth-code`, {
+        await axios.post(`${CORS_ANYWHERE_URL}${ROOT_API_URL}/user-management/v1/user/auth-code`, {
             "app_user_id": value,
             "client_id": `${CLIENT_ID}`,
             "client_secret": `${CLIENT_SECRET}`
@@ -115,16 +110,15 @@ const Requests = () => {
         });
     }
 
+    // Get an auth token based on user access code
     const authToken = async (value) => {
-        // Custom headers to avoid CORS issue
-        // I am also using the MOESIF Origin & CORS changer Chrome Extension
        const config = {
            headers: {
              'Content-Type': 'application/json'
            }
          };
 
-       await axios.post(`https://cors-anywhere.herokuapp.com/${FHIR_API_URL}/oauth2/token`, {
+       await axios.post(`${CORS_ANYWHERE_URL}${FHIR_API_URL}/oauth2/token`, {
            "code": value,
            "grant_type" : "authorization_code",
            "client_id": `${CLIENT_ID}`,
@@ -142,9 +136,8 @@ const Requests = () => {
        });
    }
 
+    // Create a patient
    const createPatient = async (value) => {
-    // Custom headers to avoid CORS issue
-    // I am also using the MOESIF Origin & CORS changer Chrome Extension
    const config = {
        headers: {
          'Content-Type': 'application/json',
@@ -152,7 +145,7 @@ const Requests = () => {
        }
      };
 
-   await axios.post(`https://cors-anywhere.herokuapp.com/${FHIR_API_URL}/dstu2/Patient`, {    
+   await axios.post(`${CORS_ANYWHERE_URL}${FHIR_API_URL}/dstu2/Patient`, {    
        "resourceType": "Patient",
        "id": `${value}`,
        "gender": "female"
@@ -165,24 +158,10 @@ const Requests = () => {
    });
 }
 
-
-//    const getPatient = async (value) => {
-//    await axios.get(`https://api.1up.health/fhir/dstu2/Patient/${value}`, { headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}})
-//    .then((response) => {
-//         // const data = response.data;
-//         console.log(response);
-//         // setPatient(data);
-//         // setPatientData(data);
-//         // console.log(response);
-//         // console.log(patient);
-//         // console.log(patientData);
-//    }
-//    )
-// }
-
+// Get a patient by name
 const getPatient = (value, props) => { 
     axios({
-      url: `https://cors-anywhere.herokuapp.com/${FHIR_API_URL}/dstu2/Patient/${value}`,
+      url: `${CORS_ANYWHERE_URL}${FHIR_API_URL}/dstu2/Patient/${value}`,
       method: 'get',
       headers: {"Authorization" : `Bearer ${token}`}
     })
@@ -197,9 +176,9 @@ const getPatient = (value, props) => {
       });
   }
 
-
+// Get everything about a patient from a patient ID
 const getEverything = async (value) => {
-    await axios.get(`https://cors-anywhere.herokuapp.com/${FHIR_API_URL}/dstu2/Patient/${value}/$everything`, { headers: {"Authorization" : `Bearer ${token}`}})
+    await axios.get(`${CORS_ANYWHERE_URL}${FHIR_API_URL}/dstu2/Patient/${value}/$everything`, { headers: {"Authorization" : `Bearer ${token}`}})
     .then((response) => {
          const data = response.data;
          console.log(response);
@@ -209,9 +188,6 @@ const getEverything = async (value) => {
     )
  }
  
-
-    // const connectURL = `https://api.1up.health/connect/system/clinical/4707?client_id=dbb2e596333400b55c417c0a1ac5187aaccess_token=f1bdaf944c08d4df29f1c7119e60b69165b12b31` 
-
     return(
         <div>
         <Card>
