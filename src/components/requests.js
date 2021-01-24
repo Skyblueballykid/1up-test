@@ -330,6 +330,9 @@ const getEverything = async (value) => {
         <Text>
         <Link to={`https://api.1up.health/connect/system/clinical/4707?client_id=${CLIENT_ID}&access_token=${token}`}>Connect Here</Link>
         </Text>
+        <br/>
+        <br/>
+        <iframe src="https://fhir-myrecord.cerner.com/dstu2/ec2458f2-1e24-41c8-b71b-0e701af7583d"></iframe>
         </Card>
         <br/>
 
