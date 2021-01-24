@@ -3,12 +3,11 @@
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 import React, { useState, useEffect } from 'react';
-import { Collapse, Result, Cascader, Popover, Card, Col, Row, Input, Button, Radio } from 'antd';
-import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Input } from 'antd';
 import axios from 'axios';
 import JSONViewer from 'react-json-viewer';
 import styled from 'styled-components';
-import { Link, BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 
 import { Typography } from 'antd';
 // const { Title as BaseTitle, Text as BaseText } = Typography;
