@@ -72,12 +72,20 @@ const Requests = () => {
     const[token, setToken] =useState('');
     const[tokenData, setTokenData] = useState([]);
 
+    // create patient state
+    const [createdData, createPatientData] = useState([]);
+
     //Patient state
     const [patient ,setPatient] = useState('');
     const [patientData, setPatientData] = useState([]);
     
     // Everything state
     const [everythingData, setEverythingData] = useState([]); 
+
+    // Store the token in local storage. Never do this in prod
+    useEffect(function persistToken() {
+        localStorage.setItem('token', token);
+    })
 
     const createUser = async (value) => {
         // Custom headers to avoid CORS issue
@@ -157,31 +165,69 @@ const Requests = () => {
        });
    }
 
+   const createPatient = async (value) => {
+    // Custom headers to avoid CORS issue
+    // I am also using the MOESIF Origin & CORS changer Chrome Extension
+   const config = {
+       headers: {
+         'Content-Type': 'application/json',
+         "Authorization" : `Bearer ${token}`
+       }
+     };
 
-   const getPatient = async (value) => {
-   await axios.get(`https://https://api.1up.health/fhir/dstu2/Patient/${value}`, { headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}})
-   .then((response) => {
-        // const data = response.data;
-        console.log(response);
-        // setPatient(data);
-        // setPatientData(data);
-        // console.log(response);
-        // console.log(patient);
-        // console.log(patientData);
-   }
-   )
+   await axios.post(`https://api.1up.health/fhir/dstu2/Patient`, {    
+       "resourceType": "Patient",
+       "id": `${value}`,
+       "gender": "female"
+   }, 
+   config).then((response) => {
+       const data = response.data;
+       console.log(response);
+       createPatientData(data);
+       console.log(createdData);
+   });
 }
 
+
+//    const getPatient = async (value) => {
+//    await axios.get(`https://api.1up.health/fhir/dstu2/Patient/${value}`, { headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}})
+//    .then((response) => {
+//         // const data = response.data;
+//         console.log(response);
+//         // setPatient(data);
+//         // setPatientData(data);
+//         // console.log(response);
+//         // console.log(patient);
+//         // console.log(patientData);
+//    }
+//    )
+// }
+
+const getPatient = (value, props) => { 
+    axios({
+      url: `https://api.1up.health/fhir/dstu2/Patient/${value}`,
+      method: 'get',
+      headers: {"Authorization" : `Bearer ${token}`}
+    })
+      .then(response => {
+        console.log(response);
+        const data = response.data;
+        setPatient(data);
+        setPatientData(data);
+        console.log(response);
+        console.log(patient);
+        console.log(patientData);
+      });
+  }
+
+
 const getEverything = async (value) => {
-    await axios.get(`https://https://api.1up.health/fhir/dstu2/Patient/${value}`, { headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}})
+    await axios.get(`https://api.1up.health/fhir/dstu2/Patient/${value}/everything`, { headers: {"Authorization" : `Bearer ${token}`}})
     .then((response) => {
-         // const data = response.data;
+         const data = response.data;
          console.log(response);
-         // setPatient(data);
-         // setPatientData(data);
-         // console.log(response);
-         // console.log(patient);
-         // console.log(patientData);
+         setEverythingData(data);
+         console.log(everythingData);
     }
     )
  }
@@ -195,7 +241,7 @@ const getEverything = async (value) => {
         <Title>
         Create User
         </Title>
-        <Search placeholder="Create a User" style={{ width: 800, margin: '0 10px' }} onSearch={createUser} />
+        <Search placeholder="Create a User" style={{ width: 1300, margin: '0 10px' }} onSearch={createUser} />
         <br/>
         <br/>
         <br/>
@@ -208,7 +254,7 @@ const getEverything = async (value) => {
         <Title>
         Get New Auth Code for an Existing User
         </Title>
-        <Search placeholder="Enter user name to get code" style={{ width: 800, margin: '0 10px' }} onSearch={authUser} />
+        <Search placeholder="Enter user name to get code" style={{ width: 1300, margin: '0 10px' }} onSearch={authUser} />
         <br/>
         <br/>
         <br/>
@@ -221,7 +267,7 @@ const getEverything = async (value) => {
         <Title>
         Get Token from Auth Code
         </Title>
-        <Search placeholder="Enter code to get token" style={{ width: 800, margin: '0 10px' }} onSearch={authToken} />
+        <Search placeholder="Enter code to get token" style={{ width: 1300, margin: '0 10px' }} onSearch={authToken} />
         <br/>
         <br/>
         <br/>
@@ -232,9 +278,23 @@ const getEverything = async (value) => {
 
         <Card>
         <Title>
+        Create Patient
+        </Title>
+        <Text>A patient needs to exist in the context of this API token to be retrievable from subsequent endpoints. Please create a patient here.</Text>
+        <Search placeholder="Get a patient" style={{ width: 1300, margin: '0 10px' }} onSearch={createPatient} />
+        <br/>
+        <br/>
+        <br/>
+        <Card>
+        <JSONViewer json={createdData}/>
+        </Card>
+        </Card>
+
+        <Card>
+        <Title>
         Get Patient
         </Title>
-        <Search placeholder="Get a patient" style={{ width: 800, margin: '0 10px' }} onSearch={getPatient} />
+        <Search placeholder="Get a patient" style={{ width: 1300, margin: '0 10px' }} onSearch={getPatient} />
         <br/>
         <br/>
         <br/>
@@ -247,7 +307,7 @@ const getEverything = async (value) => {
         <Title>
         Get Everything About a Patient
         </Title>
-        <Search placeholder="Query Everything about a Patient" style={{ width: 800, margin: '0 10px' }} onSearch={getEverything} />
+        <Search placeholder="Query Everything about a Patient" style={{ width: 1300, margin: '0 10px' }} onSearch={getEverything} />
         <br/>
         <br/>
         <br/>
