@@ -3,11 +3,11 @@
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 import React, { useState, useEffect } from 'react';
-import { Input } from 'antd';
+import { Card, Input} from 'antd';
 import axios from 'axios';
 import JSONViewer from 'react-json-viewer';
 import styled from 'styled-components';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Typography } from 'antd';
 // const { Title as BaseTitle, Text as BaseText } = Typography;
@@ -18,10 +18,6 @@ const Title = styled(Typography.Title)`
 
 const Text = styled(Typography.Text)`
   font-size: 16px;
-`;
-
-const StyledDiv = styled.div`
-  min-height: 60vh;
 `;
 
 const { Search } = Input;
