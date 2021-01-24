@@ -72,7 +72,7 @@ const Requests = () => {
            }
          };
 
-       await axios.post(`https://cors-anywhere.herokuapp.com/https://api.1up.health/user-management/v1/user`, {
+       await axios.post(`https://cors-anywhere.herokuapp.com/${ROOT_API_URL}/user-management/v1/user`, {
            "app_user_id": value,
            "client_id": `${CLIENT_ID}`,
            "client_secret": `${CLIENT_SECRET}`
@@ -98,7 +98,7 @@ const Requests = () => {
             }
           };
 
-        await axios.post(`https://cors-anywhere.herokuapp.com/https://api.1up.health/user-management/v1/user/auth-code`, {
+        await axios.post(`https://cors-anywhere.herokuapp.com/${ROOT_API_URL}/user-management/v1/user/auth-code`, {
             "app_user_id": value,
             "client_id": `${CLIENT_ID}`,
             "client_secret": `${CLIENT_SECRET}`
@@ -124,7 +124,7 @@ const Requests = () => {
            }
          };
 
-       await axios.post(`https://cors-anywhere.herokuapp.com/https://api.1up.health/fhir/oauth2/token`, {
+       await axios.post(`https://cors-anywhere.herokuapp.com/${FHIR_API_URL}/oauth2/token`, {
            "code": value,
            "grant_type" : "authorization_code",
            "client_id": `${CLIENT_ID}`,
@@ -152,7 +152,7 @@ const Requests = () => {
        }
      };
 
-   await axios.post(`https://cors-anywhere.herokuapp.com/https://api.1up.health/fhir/dstu2/Patient`, {    
+   await axios.post(`https://cors-anywhere.herokuapp.com/${FHIR_API_URL}/dstu2/Patient`, {    
        "resourceType": "Patient",
        "id": `${value}`,
        "gender": "female"
@@ -182,7 +182,7 @@ const Requests = () => {
 
 const getPatient = (value, props) => { 
     axios({
-      url: `https://cors-anywhere.herokuapp.com/https://api.1up.health/fhir/dstu2/Patient/${value}`,
+      url: `https://cors-anywhere.herokuapp.com/${FHIR_API_URL}/dstu2/Patient/${value}`,
       method: 'get',
       headers: {"Authorization" : `Bearer ${token}`}
     })
@@ -199,7 +199,7 @@ const getPatient = (value, props) => {
 
 
 const getEverything = async (value) => {
-    await axios.get(`https://cors-anywhere.herokuapp.com/https://api.1up.health/fhir/dstu2/Patient/${value}/$everything`, { headers: {"Authorization" : `Bearer ${token}`}})
+    await axios.get(`https://cors-anywhere.herokuapp.com/${FHIR_API_URL}/dstu2/Patient/${value}/$everything`, { headers: {"Authorization" : `Bearer ${token}`}})
     .then((response) => {
          const data = response.data;
          console.log(response);
@@ -304,7 +304,7 @@ const getEverything = async (value) => {
         Connect to Provider
         </Title>
         <Text>
-        <Link to={`https://api.1up.health/connect/system/clinical/4707?client_id=${CLIENT_ID}&access_token=${token}`}>Connect Here</Link>
+        <Link to={`${ROOT_API_URL}/connect/system/clinical/4707?client_id=${CLIENT_ID}&access_token=${token}`}>Connect Here</Link>
         </Text>
         <br/>
         <br/>
