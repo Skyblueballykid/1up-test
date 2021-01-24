@@ -8,7 +8,7 @@ import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import JSONViewer from 'react-json-viewer';
 import styled from 'styled-components';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Link, BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import { Typography } from 'antd';
 // const { Title as BaseTitle, Text as BaseText } = Typography;
@@ -112,6 +112,7 @@ const Requests = () => {
        });
    }
 
+   // Get a new auth code for an existing user
     const authUser = async (value) => {
          // Custom headers to avoid CORS issue
          // I am also using the MOESIF Origin & CORS changer Chrome Extension
@@ -326,9 +327,7 @@ const getEverything = async (value) => {
         Connect to Provider
         </Title>
         <Text>
-        <a href="https://api.1up.health/connect/system/clinical/4707?client_id=dbb2e596333400b55c417c0a1ac5187a&access_token=f1bdaf944c08d4df29f1c7119e60b69165b12b31">
-        Connect Here
-        </a>
+        <Link to={`https://api.1up.health/connect/system/clinical/4707?client_id=${CLIENT_ID}&access_token=${token}`}>Connect Here</Link>
         </Text>
         </Card>
         <br/>
