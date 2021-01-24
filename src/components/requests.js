@@ -68,6 +68,10 @@ const Requests = () => {
     const[code, setUserCode] = useState('');
     const [codeData, setCodeData] = useState([]);
 
+    // Token state
+    const[token, setToken] =useState('');
+    const[tokenData, setTokenData] = useState([]);
+
     const createUser = async (value) => {
         // Custom headers to avoid CORS issue
         // I am also using the MOESIF Origin & CORS changer Chrome Extension
@@ -120,6 +124,34 @@ const Requests = () => {
         });
     }
 
+    const authToken = async (value) => {
+        // Custom headers to avoid CORS issue
+        // I am also using the MOESIF Origin & CORS changer Chrome Extension
+       const config = {
+           headers: {
+             'Content-Type': 'application/json'
+           }
+         };
+
+       axios.post(`https://api.1up.health/fhir/oauth2/token`, {
+           "code": value,
+           "grant_type" : "authorization_code",
+           "client_id": "dbb2e596333400b55c417c0a1ac5187a",
+           "client_secret": "e52c028bd69b7dcfa3587e343d87f13f"
+       }, 
+       config).then((response) => {
+           const data = response.data;
+           const token = response.data.access_token;
+           setToken(token);
+           setTokenData(data);
+           console.log(response);
+           console.log(token);
+           console.log(tokenData);
+
+       });
+   }
+
+
     const connectURL = `https://api.1up.health/connect/system/clinical/4707?client_id=dbb2e596333400b55c417c0a1ac5187aaccess_token=f1bdaf944c08d4df29f1c7119e60b69165b12b31` 
 
     return(
@@ -128,7 +160,7 @@ const Requests = () => {
         <Title>
         Create User
         </Title>
-        <Search placeholder="Enter user name to get code" style={{ width: 800, margin: '0 10px' }} onSearch={createUser} />
+        <Search placeholder="Create a user" style={{ width: 800, margin: '0 10px' }} onSearch={createUser} />
         <br/>
         <br/>
         <br/>
@@ -136,7 +168,7 @@ const Requests = () => {
         <JSONViewer json={userData}/>
         </Card>
         </Card>
-        <Card></Card>
+        
         <Card>
         <Title>
         Get Auth Code for an Existing User
@@ -148,7 +180,21 @@ const Requests = () => {
         <Card>
         <JSONViewer json={codeData}/>
         </Card>
+        </Card>            
+
+        <Card>
+        <Title>
+        Get Token from Auth
+        </Title>
+        <Search placeholder="Enter code to get token" style={{ width: 800, margin: '0 10px' }} onSearch={authToken} />
+        <br/>
+        <br/>
+        <br/>
+        <Card>
+        <JSONViewer json={tokenData}/>
         </Card>
+        </Card>
+
         <Card>
         <Title>
         Connect
