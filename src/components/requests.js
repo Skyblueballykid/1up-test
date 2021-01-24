@@ -8,7 +8,7 @@ import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import JSONViewer from 'react-json-viewer';
 import styled from 'styled-components';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Link, BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import { Typography } from 'antd';
 // const { Title as BaseTitle, Text as BaseText } = Typography;
@@ -33,30 +33,6 @@ const CLIENT_SECRET = `e52c028bd69b7dcfa3587e343d87f13f`;
 const ROOT_API_URL = `https://api.1up.health`;
 const FHIR_API_URL = `https://api.1up.health/fhir`;
 
-
-function getRequest(value) {
-    axios.get(value, {timeout: 10000}
-    )
-    .then(res => console.log(res.data))
-    .catch(err => console.error(err));
-}
-
-
-// adapted from oneup.js file in demo app to use axios 
-function getToken(code, callback) {
-    let postUrl = `${ROOT_API_URL}/fhir/ouath2/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}&grant_type=authorization_code`;
-    axios.post(postUrl)
-}
-
-
-// const response = [
-//     {label: 'Authorization', value: 'Authorization'},
-//     {label: 'Content Type', value: 'Application/JSON'},
-//     {label: 'Connection', value: 'Connection'},
-//     {label: 'Transfer-Encoding', value: 'Transfer-Encoding'},
-//     {label: 'Keep-Alive', value: 'Keep-Alive'}
-// ]
-const onChange = () => console.log('cool');
 
 const Requests = () => {
 
@@ -96,7 +72,7 @@ const Requests = () => {
            }
          };
 
-       await axios.post(`https://api.1up.health/user-management/v1/user`, {
+       await axios.post(`https://cors-anywhere.herokuapp.com/${ROOT_API_URL}/user-management/v1/user`, {
            "app_user_id": value,
            "client_id": `${CLIENT_ID}`,
            "client_secret": `${CLIENT_SECRET}`
@@ -112,6 +88,7 @@ const Requests = () => {
        });
    }
 
+   // Get a new auth code for an existing user
     const authUser = async (value) => {
          // Custom headers to avoid CORS issue
          // I am also using the MOESIF Origin & CORS changer Chrome Extension
@@ -121,7 +98,7 @@ const Requests = () => {
             }
           };
 
-        await axios.post(`https://api.1up.health/user-management/v1/user/auth-code`, {
+        await axios.post(`https://cors-anywhere.herokuapp.com/${ROOT_API_URL}/user-management/v1/user/auth-code`, {
             "app_user_id": value,
             "client_id": `${CLIENT_ID}`,
             "client_secret": `${CLIENT_SECRET}`
@@ -147,7 +124,7 @@ const Requests = () => {
            }
          };
 
-       await axios.post(`https://api.1up.health/fhir/oauth2/token`, {
+       await axios.post(`https://cors-anywhere.herokuapp.com/${FHIR_API_URL}/oauth2/token`, {
            "code": value,
            "grant_type" : "authorization_code",
            "client_id": `${CLIENT_ID}`,
@@ -175,7 +152,7 @@ const Requests = () => {
        }
      };
 
-   await axios.post(`https://api.1up.health/fhir/dstu2/Patient`, {    
+   await axios.post(`https://cors-anywhere.herokuapp.com/${FHIR_API_URL}/dstu2/Patient`, {    
        "resourceType": "Patient",
        "id": `${value}`,
        "gender": "female"
@@ -205,7 +182,7 @@ const Requests = () => {
 
 const getPatient = (value, props) => { 
     axios({
-      url: `https://api.1up.health/fhir/dstu2/Patient/${value}`,
+      url: `https://cors-anywhere.herokuapp.com/${FHIR_API_URL}/dstu2/Patient/${value}`,
       method: 'get',
       headers: {"Authorization" : `Bearer ${token}`}
     })
@@ -222,7 +199,7 @@ const getPatient = (value, props) => {
 
 
 const getEverything = async (value) => {
-    await axios.get(`https://api.1up.health/fhir/dstu2/Patient/${value}/$everything`, { headers: {"Authorization" : `Bearer ${token}`}})
+    await axios.get(`https://cors-anywhere.herokuapp.com/${FHIR_API_URL}/dstu2/Patient/${value}/$everything`, { headers: {"Authorization" : `Bearer ${token}`}})
     .then((response) => {
          const data = response.data;
          console.log(response);
@@ -245,10 +222,11 @@ const getEverything = async (value) => {
         <Search placeholder="Create a User" style={{ width: 1300, margin: '0 10px' }} onSearch={createUser} />
         <br/>
         <br/>
-        <br/>
         <Card>
         <JSONViewer json={userData}/>
         </Card>
+        <br/>
+        <br/>
         </Card>
         
         <Card>
@@ -326,10 +304,11 @@ const getEverything = async (value) => {
         Connect to Provider
         </Title>
         <Text>
-        <a href="https://api.1up.health/connect/system/clinical/4707?client_id=dbb2e596333400b55c417c0a1ac5187a&access_token=f1bdaf944c08d4df29f1c7119e60b69165b12b31">
-        Connect Here
-        </a>
+        <Link to={`${ROOT_API_URL}/connect/system/clinical/4707?client_id=${CLIENT_ID}&access_token=${token}`}>Connect Here</Link>
         </Text>
+        <br/>
+        <br/>
+        <iframe src="https://fhir-myrecord.cerner.com/dstu2/ec2458f2-1e24-41c8-b71b-0e701af7583d"></iframe>
         </Card>
         <br/>
 
