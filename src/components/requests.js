@@ -158,30 +158,45 @@ const Requests = () => {
    }
 
 
-   const getPatient = async (value) => {
-   await axios.get(`https://https://api.1up.health/fhir/dstu2/Patient/${value}`, { headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}})
-   .then((response) => {
-        // const data = response.data;
+//    const getPatient = async (value) => {
+//    await axios.get(`https://api.1up.health/fhir/dstu2/Patient/${value}`, { headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}})
+//    .then((response) => {
+//         // const data = response.data;
+//         console.log(response);
+//         // setPatient(data);
+//         // setPatientData(data);
+//         // console.log(response);
+//         // console.log(patient);
+//         // console.log(patientData);
+//    }
+//    )
+// }
+
+const getPatient = (value) => { 
+    axios({
+      url: `https://api.1up.health/fhir/dstu2/Patient/${value}`,
+      method: 'get',
+      headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}
+    })
+      .then(response => {
         console.log(response);
-        // setPatient(data);
-        // setPatientData(data);
-        // console.log(response);
-        // console.log(patient);
-        // console.log(patientData);
-   }
-   )
-}
+        const data = response.data;
+        setPatient(data);
+        setPatientData(data);
+        console.log(response);
+        console.log(patient);
+        console.log(patientData);
+      });
+  }
+
 
 const getEverything = async (value) => {
-    await axios.get(`https://https://api.1up.health/fhir/dstu2/Patient/${value}`, { headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}})
+    await axios.get(`https://api.1up.health/fhir/dstu2/Patient/${value}/everything`, { headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}})
     .then((response) => {
-         // const data = response.data;
+         const data = response.data;
          console.log(response);
-         // setPatient(data);
-         // setPatientData(data);
-         // console.log(response);
-         // console.log(patient);
-         // console.log(patientData);
+         setEverythingData(data);
+         console.log(everythingData);
     }
     )
  }
@@ -195,7 +210,7 @@ const getEverything = async (value) => {
         <Title>
         Create User
         </Title>
-        <Search placeholder="Create a User" style={{ width: 800, margin: '0 10px' }} onSearch={createUser} />
+        <Search placeholder="Create a User" style={{ width: 1300, margin: '0 10px' }} onSearch={createUser} />
         <br/>
         <br/>
         <br/>
@@ -208,7 +223,7 @@ const getEverything = async (value) => {
         <Title>
         Get New Auth Code for an Existing User
         </Title>
-        <Search placeholder="Enter user name to get code" style={{ width: 800, margin: '0 10px' }} onSearch={authUser} />
+        <Search placeholder="Enter user name to get code" style={{ width: 1300, margin: '0 10px' }} onSearch={authUser} />
         <br/>
         <br/>
         <br/>
@@ -221,7 +236,7 @@ const getEverything = async (value) => {
         <Title>
         Get Token from Auth Code
         </Title>
-        <Search placeholder="Enter code to get token" style={{ width: 800, margin: '0 10px' }} onSearch={authToken} />
+        <Search placeholder="Enter code to get token" style={{ width: 1300, margin: '0 10px' }} onSearch={authToken} />
         <br/>
         <br/>
         <br/>
@@ -234,7 +249,7 @@ const getEverything = async (value) => {
         <Title>
         Get Patient
         </Title>
-        <Search placeholder="Get a patient" style={{ width: 800, margin: '0 10px' }} onSearch={getPatient} />
+        <Search placeholder="Get a patient" style={{ width: 1300, margin: '0 10px' }} onSearch={getPatient} />
         <br/>
         <br/>
         <br/>
@@ -247,7 +262,7 @@ const getEverything = async (value) => {
         <Title>
         Get Everything About a Patient
         </Title>
-        <Search placeholder="Query Everything about a Patient" style={{ width: 800, margin: '0 10px' }} onSearch={getEverything} />
+        <Search placeholder="Query Everything about a Patient" style={{ width: 1300, margin: '0 10px' }} onSearch={getEverything} />
         <br/>
         <br/>
         <br/>
