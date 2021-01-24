@@ -72,12 +72,20 @@ const Requests = () => {
     const[token, setToken] =useState('');
     const[tokenData, setTokenData] = useState([]);
 
+    // create patient state
+    const [createdData, createPatientData] = useState([]);
+
     //Patient state
     const [patient ,setPatient] = useState('');
     const [patientData, setPatientData] = useState([]);
     
     // Everything state
     const [everythingData, setEverythingData] = useState([]); 
+
+    // Store the token in local storage. Never do this in prod
+    useEffect(function persistToken() {
+        localStorage.setItem('token', token);
+    })
 
     const createUser = async (value) => {
         // Custom headers to avoid CORS issue
@@ -157,6 +165,29 @@ const Requests = () => {
        });
    }
 
+   const createPatient = async (value) => {
+    // Custom headers to avoid CORS issue
+    // I am also using the MOESIF Origin & CORS changer Chrome Extension
+   const config = {
+       headers: {
+         'Content-Type': 'application/json',
+         "Authorization" : `Bearer ${token}`
+       }
+     };
+
+   await axios.post(`https://api.1up.health/fhir/dstu2/Patient`, {    
+       "resourceType": "Patient",
+       "id": `${value}`,
+       "gender": "female"
+   }, 
+   config).then((response) => {
+       const data = response.data;
+       console.log(response);
+       createPatientData(data);
+       console.log(createdData);
+   });
+}
+
 
 //    const getPatient = async (value) => {
 //    await axios.get(`https://api.1up.health/fhir/dstu2/Patient/${value}`, { headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}})
@@ -172,11 +203,11 @@ const Requests = () => {
 //    )
 // }
 
-const getPatient = (value) => { 
+const getPatient = (value, props) => { 
     axios({
       url: `https://api.1up.health/fhir/dstu2/Patient/${value}`,
       method: 'get',
-      headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}
+      headers: {"Authorization" : `Bearer ${token}`}
     })
       .then(response => {
         console.log(response);
@@ -191,7 +222,7 @@ const getPatient = (value) => {
 
 
 const getEverything = async (value) => {
-    await axios.get(`https://api.1up.health/fhir/dstu2/Patient/${value}/everything`, { headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}})
+    await axios.get(`https://api.1up.health/fhir/dstu2/Patient/${value}/everything`, { headers: {"Authorization" : `Bearer ${token}`}})
     .then((response) => {
          const data = response.data;
          console.log(response);
@@ -242,6 +273,20 @@ const getEverything = async (value) => {
         <br/>
         <Card>
         <JSONViewer json={tokenData}/>
+        </Card>
+        </Card>
+
+        <Card>
+        <Title>
+        Create Patient
+        </Title>
+        <Text>A patient needs to exist in the context of this API token to be retrievable from subsequent endpoints. Please create a patient here.</Text>
+        <Search placeholder="Get a patient" style={{ width: 1300, margin: '0 10px' }} onSearch={createPatient} />
+        <br/>
+        <br/>
+        <br/>
+        <Card>
+        <JSONViewer json={createdData}/>
         </Card>
         </Card>
 
