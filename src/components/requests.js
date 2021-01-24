@@ -27,7 +27,7 @@ const StyledDiv = styled.div`
 
 const { Search } = Input;
 
-
+// Hardcode for simplicity. Use env variables in production
 const CLIENT_ID = `dbb2e596333400b55c417c0a1ac5187a`;
 const CLIENT_SECRET = `e52c028bd69b7dcfa3587e343d87f13f`;
 const ROOT_API_URL = `https://api.1up.health`;
@@ -68,9 +68,16 @@ const Requests = () => {
     const[code, setUserCode] = useState('');
     const [codeData, setCodeData] = useState([]);
 
-    // Token state
+    //Token state
     const[token, setToken] =useState('');
     const[tokenData, setTokenData] = useState([]);
+
+    //Patient state
+    const [patient ,setPatient] = useState('');
+    const [patientData, setPatientData] = useState([]);
+    
+    // Everything state
+    const [everythingData, setEverythingData] = useState([]); 
 
     const createUser = async (value) => {
         // Custom headers to avoid CORS issue
@@ -81,10 +88,10 @@ const Requests = () => {
            }
          };
 
-       axios.post(`https://api.1up.health/user-management/v1/user`, {
+       await axios.post(`https://api.1up.health/user-management/v1/user`, {
            "app_user_id": value,
-           "client_id": "dbb2e596333400b55c417c0a1ac5187a",
-           "client_secret": "e52c028bd69b7dcfa3587e343d87f13f"
+           "client_id": `${CLIENT_ID}`,
+           "client_secret": `${CLIENT_SECRET}`
        }, 
        config).then((response) => {
            const data = response.data;
@@ -97,7 +104,6 @@ const Requests = () => {
        });
    }
 
-
     const authUser = async (value) => {
          // Custom headers to avoid CORS issue
          // I am also using the MOESIF Origin & CORS changer Chrome Extension
@@ -107,10 +113,10 @@ const Requests = () => {
             }
           };
 
-        axios.post(`https://api.1up.health/user-management/v1/user/auth-code`, {
+        await axios.post(`https://api.1up.health/user-management/v1/user/auth-code`, {
             "app_user_id": value,
-            "client_id": "dbb2e596333400b55c417c0a1ac5187a",
-            "client_secret": "e52c028bd69b7dcfa3587e343d87f13f"
+            "client_id": `${CLIENT_ID}`,
+            "client_secret": `${CLIENT_SECRET}`
         }, 
         config).then((response) => {
             const data = response.data;
@@ -133,26 +139,55 @@ const Requests = () => {
            }
          };
 
-       axios.post(`https://api.1up.health/fhir/oauth2/token`, {
+       await axios.post(`https://api.1up.health/fhir/oauth2/token`, {
            "code": value,
            "grant_type" : "authorization_code",
-           "client_id": "dbb2e596333400b55c417c0a1ac5187a",
-           "client_secret": "e52c028bd69b7dcfa3587e343d87f13f"
+           "client_id": `${CLIENT_ID}`,
+           "client_secret": `${CLIENT_SECRET}`
        }, 
        config).then((response) => {
            const data = response.data;
-           const token = response.data.access_token;
-           setToken(token);
+           const token_string = response.data.access_token;
+           setToken(token_string);
            setTokenData(data);
            console.log(response);
-           console.log(token);
+           console.log(token_string);
            console.log(tokenData);
 
        });
    }
 
 
-    const connectURL = `https://api.1up.health/connect/system/clinical/4707?client_id=dbb2e596333400b55c417c0a1ac5187aaccess_token=f1bdaf944c08d4df29f1c7119e60b69165b12b31` 
+   const getPatient = async (value) => {
+   await axios.get(`https://https://api.1up.health/fhir/dstu2/Patient/${value}`, { headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}})
+   .then((response) => {
+        // const data = response.data;
+        console.log(response);
+        // setPatient(data);
+        // setPatientData(data);
+        // console.log(response);
+        // console.log(patient);
+        // console.log(patientData);
+   }
+   )
+}
+
+const getEverything = async (value) => {
+    await axios.get(`https://https://api.1up.health/fhir/dstu2/Patient/${value}`, { headers: {"Authorization" : "Bearer f6ffc91305643707d6284d3e12476a527680039a"}})
+    .then((response) => {
+         // const data = response.data;
+         console.log(response);
+         // setPatient(data);
+         // setPatientData(data);
+         // console.log(response);
+         // console.log(patient);
+         // console.log(patientData);
+    }
+    )
+ }
+ 
+
+    // const connectURL = `https://api.1up.health/connect/system/clinical/4707?client_id=dbb2e596333400b55c417c0a1ac5187aaccess_token=f1bdaf944c08d4df29f1c7119e60b69165b12b31` 
 
     return(
         <div>
@@ -160,7 +195,7 @@ const Requests = () => {
         <Title>
         Create User
         </Title>
-        <Search placeholder="Create a user" style={{ width: 800, margin: '0 10px' }} onSearch={createUser} />
+        <Search placeholder="Create a User" style={{ width: 800, margin: '0 10px' }} onSearch={createUser} />
         <br/>
         <br/>
         <br/>
@@ -171,7 +206,7 @@ const Requests = () => {
         
         <Card>
         <Title>
-        Get Auth Code for an Existing User
+        Get New Auth Code for an Existing User
         </Title>
         <Search placeholder="Enter user name to get code" style={{ width: 800, margin: '0 10px' }} onSearch={authUser} />
         <br/>
@@ -184,7 +219,7 @@ const Requests = () => {
 
         <Card>
         <Title>
-        Get Token from Auth
+        Get Token from Auth Code
         </Title>
         <Search placeholder="Enter code to get token" style={{ width: 800, margin: '0 10px' }} onSearch={authToken} />
         <br/>
@@ -197,7 +232,33 @@ const Requests = () => {
 
         <Card>
         <Title>
-        Connect
+        Get Patient
+        </Title>
+        <Search placeholder="Get a patient" style={{ width: 800, margin: '0 10px' }} onSearch={getPatient} />
+        <br/>
+        <br/>
+        <br/>
+        <Card>
+        <JSONViewer json={patientData}/>
+        </Card>
+        </Card>
+
+        <Card>
+        <Title>
+        Get Everything About a Patient
+        </Title>
+        <Search placeholder="Query Everything about a Patient" style={{ width: 800, margin: '0 10px' }} onSearch={getEverything} />
+        <br/>
+        <br/>
+        <br/>
+        <Card>
+        <JSONViewer json={everythingData}/>
+        </Card>
+        </Card>
+
+        <Card>
+        <Title>
+        Connect to Provider
         </Title>
         <Text>
         <a href="https://api.1up.health/connect/system/clinical/4707?client_id=dbb2e596333400b55c417c0a1ac5187a&access_token=f1bdaf944c08d4df29f1c7119e60b69165b12b31">
@@ -205,12 +266,8 @@ const Requests = () => {
         </a>
         </Text>
         </Card>
-        <Card>
-        <Title>
-        Everything Query
-        </Title>            
-        {/* <JSONViewer json={response}/> */}
-        </Card>
+        <br/>
+
         </div>
         )
 }

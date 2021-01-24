@@ -20,7 +20,7 @@ const About = () => {
   return (
     <StyledDiv>
         <Title>
-        Thomas Kalnik
+        Thomas J Kalnik
         </Title>
         <Text>kalnik.thomas@gmail.com</Text>
         <br/>
