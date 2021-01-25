@@ -12,6 +12,7 @@ The frontend features a variety of routes that can:
 
 To run the standalone frontend in development mode in the project directory, you can run:
 
+### `yarn install`
 ### `yarn start`
 
 Runs the app in the development mode.\
@@ -20,5 +21,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 ## Express backend
 
 To run the backend express server, open a new terminal window and run:
+
+### `yarn install`
 
 ### `PORT=3001 node bin/www`
