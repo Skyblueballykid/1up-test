@@ -305,9 +305,13 @@ const getEverything = async (value) => {
         <Title>
         Connect to Provider
         </Title>
+        {/* <Button
+        onClick={saveToken}
+        > */}
         <Text>
         <a href={`${ROOT_API_URL}/connect/system/clinical/4707?client_id=${CLIENT_ID}&access_token=${token}`} target="_blank">Connect Here</a>
         </Text>
+        {/* </Button> */}
         <br/>
         <br/>
         <Button
@@ -315,12 +319,9 @@ const getEverything = async (value) => {
         >
         Show Patient Data
         </Button>
+        <br/>
         <Card>
-        <Collapse ghost>
-        <Panel>
         <ReactJson src={patientEHRData}/>
-        </Panel>
-        </Collapse>
         </Card>
         <br/>
         <br/>
