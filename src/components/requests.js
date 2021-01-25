@@ -21,7 +21,7 @@ const Text = styled(Typography.Text)`
 
 const { Search } = Input;
 
-// Hardcode for simplicity. Use env variables in production
+// TODO: Use an express app route to store secrets
 const CLIENT_ID = `dbb2e596333400b55c417c0a1ac5187a`;
 const CLIENT_SECRET = `e52c028bd69b7dcfa3587e343d87f13f`;
 
@@ -64,6 +64,7 @@ const Requests = () => {
     }, [])
 
     // Store the token in local storage. Never do this in prod
+    // TODO: Setup an express app to store the token
     useEffect(function persistToken() {
         localStorage.setItem('token', token);
     }, [token])
