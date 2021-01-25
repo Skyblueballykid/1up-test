@@ -26,7 +26,9 @@ const CLIENT_ID = `dbb2e596333400b55c417c0a1ac5187a`;
 const CLIENT_SECRET = `e52c028bd69b7dcfa3587e343d87f13f`;
 
 // use cors anywhere heroku app to avoid CORS issues in dev
-const CORS_ANYWHERE_URL = `https://cors-anywhere.herokuapp.com/`;
+
+// https://cors-anywhere.herokuapp.com/
+const CORS_ANYWHERE_URL = '';
 const ROOT_API_URL = `https://api.1up.health`;
 const FHIR_API_URL = `https://api.1up.health/fhir`;
 
@@ -57,6 +59,26 @@ const Requests = () => {
 
     // EHR data
     const [patientEHRData, setPatientEHRData] = useState([]);
+    const [officialName, setOfficialName] = useState('');
+    const [ID, setID] = useState('');
+    const [patientBirth, setPatientBirth] = useState('');
+    const [patientGender, setPatientGender] = useState('');
+    const [patientAddress, setPatientAddress] = useState([]);
+    const [patientCareProvider, setPatientCareProvider] = useState([]);
+    const [patientCommunication, setPatientCommunication] = useState([]);
+    const [patientContactName, setPatientContact1] = useState([]);
+    const [patientContactAddress, setPatientContact2] = useState([]);
+    const [patientContactGender, setPatientContact3] = useState([]);
+    const [patientContactDate, setPatientContact4] = useState([]);  
+    const [patientContactRelation, setPatientContact5] = useState([]);
+    const [patientContactTelecom, setPatientContact6] = useState([]);    
+    const [patientExtension1, setPatientExtension1] = useState([]);
+    const [patientExtension2, setPatientExtension2] = useState([]);
+    const [patientName, setPatientName] = useState([]);
+    const [patientTelecom, setPatientTelecom] = useState([]);
+    const [patientIdentifier, setPatientIdentifier] = useState([]);
+    const [patientMaritalStatus, setPatientMaritalStatus] =useState([]);
+
 
     useEffect(() => {
       const parsedToken = String(localStorage.getItem("token") || 0)
@@ -205,9 +227,47 @@ const getEverything = async (value) => {
     .then(response => {
       console.log(response);
       const data = response.data;
+      const address = data.entry[0].resource.address[0];
+      const name = data.entry[0].resource.name;
+      const officialName = data.entry[0].resource.name[0];
+      const id = data.entry[0].resource.id;
+      const extension1 = data.entry[0].resource.extension[0].extension;
+      const extension2 = data.entry[0].resource.extension[1].extension;
+      const gender = data.entry[0].resource.gender;
+      const maritalStatus = data.entry[0].resource.maritalStatus;
+      const telecom = data.entry[0].resource.telecom;
+      const identifier = data.entry[0].resource.identifier;
+      const birth = data.entry[0].resource.birthDate;
+      const contactName = data.entry[0].resource.contact[0].name;
+      const contactAddress = data.entry[0].resource.contact[0].address;
+      const contactGender = data.entry[0].resource.contact[0].gender;
+      const contactPeriod = data.entry[0].resource.contact[0].period;
+      const contactRelation = data.entry[0].resource.contact[0].relationship;
+      const contactTelecom = data.entry[0].resource.contact[0].telecom; 
+      const careProvider = data.entry[0].resource.careProvider;
+      const communication = data.entry[0].resource.communication[0];
       setPatientEHRData(data);
+      setPatientName(name);
+      setOfficialName(officialName);
+      setPatientTelecom(telecom);
+      setPatientContact1(contactName);
+      setPatientContact2(contactAddress);
+      setPatientContact3(contactGender);
+      setPatientContact4(contactPeriod);
+      setPatientContact5(contactRelation);
+      setPatientContact6(contactTelecom);
+      setPatientAddress(address);
+      setPatientIdentifier(identifier);
+      setPatientBirth(birth);
+      setID(id);
+      setPatientGender(gender);
+      setPatientMaritalStatus(maritalStatus);
+      setPatientExtension1(extension1);
+      setPatientExtension2(extension2);
+      setPatientCareProvider(careProvider);
+      setPatientCommunication(communication);
       console.log(response);
-      console.log(patientEHRData);
+      console.log(patientContactName);
     });
 }
 
@@ -325,6 +385,39 @@ const getEverything = async (value) => {
         </Button>
         <br/>
         <Card>
+        <JSONViewer json={{officialName}}/>
+        <br/>
+        <JSONViewer json={{ID}}/>
+        <br/>
+        <JSONViewer json={{patientBirth}}/>
+        <br/>
+        <JSONViewer json={{patientGender}}/>
+        <br/>
+        <JSONViewer json={{patientAddress}}/>
+        <br/>
+        <JSONViewer json={{patientCareProvider}}/>
+        <br/>
+        <JSONViewer json={{patientCommunication}}/>
+        <br/>
+        <JSONViewer json={{patientMaritalStatus}}/>
+        <br/>
+        <JSONViewer json={{patientName}}/>
+        <br/>
+        <JSONViewer json={{patientTelecom}}/>
+        <br/>
+        <JSONViewer json={{patientContactName}}/>
+        <JSONViewer json={{patientContactAddress}}/>
+        <JSONViewer json={{patientContactGender}}/>
+        <JSONViewer json={{patientContactDate}}/>
+        <JSONViewer json={{patientContactRelation}}/>
+        <JSONViewer json={{patientContactTelecom}}/>  
+        <br/>
+        <JSONViewer json={{patientExtension1}}/>
+        <br/>
+        <JSONViewer json={{patientExtension2}}/>
+        <br/>
+        <JSONViewer json={{patientIdentifier}}/>
+        <br/>
         <ReactJson src={patientEHRData}/>
         </Card>
         <br/>
