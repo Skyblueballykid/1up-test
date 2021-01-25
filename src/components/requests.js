@@ -3,7 +3,7 @@
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 import React, { useState, useEffect } from 'react';
-import { Card, Input, Button, Collapse } from 'antd';
+import { Card, Input, Button } from 'antd';
 import axios from 'axios';
 import JSONViewer from 'react-json-viewer';
 import styled from 'styled-components';
@@ -20,8 +20,6 @@ const Text = styled(Typography.Text)`
 `;
 
 const { Search } = Input;
-
-const { Panel } = Collapse;
 
 // Hardcode for simplicity. Use env variables in production
 const CLIENT_ID = `dbb2e596333400b55c417c0a1ac5187a`;
@@ -60,10 +58,15 @@ const Requests = () => {
     // EHR data
     const [patientEHRData, setPatientEHRData] = useState([]);
 
+    useEffect(() => {
+      const parsedToken = String(localStorage.getItem("token") || 0)
+      setToken(parsedToken)
+    }, [])
+
     // Store the token in local storage. Never do this in prod
     useEffect(function persistToken() {
         localStorage.setItem('token', token);
-    })
+    }, [token])
 
     // Create a user in this context
     const createUser = async (value) => {
@@ -309,7 +312,7 @@ const getEverything = async (value) => {
         onClick={saveToken}
         > */}
         <Text>
-        <a href={`${ROOT_API_URL}/connect/system/clinical/4707?client_id=${CLIENT_ID}&access_token=${token}`} target="_blank">Connect Here</a>
+        <a href={`${ROOT_API_URL}/connect/system/clinical/4707?client_id=${CLIENT_ID}&access_token=${token}`}>Connect Here</a>
         </Text>
         {/* </Button> */}
         <br/>
