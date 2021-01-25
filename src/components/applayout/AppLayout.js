@@ -1,26 +1,11 @@
 import React from 'react';
 import './AppLayout.css';
-import { Layout, Menu, PageHeader, Button, Typography, Collapse, Card } from 'antd';
+import { Layout, Menu, PageHeader } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
-import { SolutionOutlined, PhoneOutlined, AppstoreOutlined, MenuUnfoldOutlined,
-  MenuFoldOutlined, ApiFilled, ControlFilled } from '@ant-design/icons';
-import styled from 'styled-components';
+import {AppstoreOutlined, ControlFilled } from '@ant-design/icons';
 
-const { SubMenu } = Menu;
-const { Header, Sider, Content, Footer } = Layout;
-const { Panel } = Collapse;
-  
-const Title = styled(Typography.Title)`
-  font-size: 16px;
-`;
+const { Content, Footer } = Layout;
 
-const Text = styled(Typography.Text)`
-  font-size: 16px;
-`;
-
-const StyledDiv = styled.div`
-  min-height: 88vh;
-`;
 class AppLayout extends React.Component {
 
 

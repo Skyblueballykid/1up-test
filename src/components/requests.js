@@ -3,14 +3,13 @@
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 /* eslint jsx-a11y/no-static-element-interactions: 0 */
 import React, { useState, useEffect } from 'react';
-import { Card, Input} from 'antd';
+import { Card, Input, Button } from 'antd';
 import axios from 'axios';
 import JSONViewer from 'react-json-viewer';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import ReactJson from 'react-json-view';
 
 import { Typography } from 'antd';
-// const { Title as BaseTitle, Text as BaseText } = Typography;
 
 const Title = styled(Typography.Title)`
   font-size: 16px;
@@ -56,10 +55,18 @@ const Requests = () => {
     // Everything state
     const [everythingData, setEverythingData] = useState([]); 
 
+    // EHR data
+    const [patientEHRData, setPatientEHRData] = useState([]);
+
+    useEffect(() => {
+      const parsedToken = String(localStorage.getItem("token") || 0)
+      setToken(parsedToken)
+    }, [])
+
     // Store the token in local storage. Never do this in prod
     useEffect(function persistToken() {
         localStorage.setItem('token', token);
-    })
+    }, [token])
 
     // Create a user in this context
     const createUser = async (value) => {
@@ -79,7 +86,6 @@ const Requests = () => {
            console.log(response);
            setUser(data.app_user_id);
            setUserData(data);
-           console.log(response);
            console.log(user);
            console.log(userData);
        });
@@ -187,6 +193,23 @@ const getEverything = async (value) => {
     }
     )
  }
+
+ // Get patient from EHR systems
+ const getPatientEHRData = (value, props) => { 
+  axios({
+    url: `${CORS_ANYWHERE_URL}${FHIR_API_URL}/dstu2/Patient`,
+    method: 'get',
+    headers: {"Authorization" : `Bearer ${token}`}
+  })
+    .then(response => {
+      console.log(response);
+      const data = response.data;
+      setPatientEHRData(data);
+      console.log(response);
+      console.log(patientEHRData);
+    });
+}
+
  
     return(
         <div>
@@ -195,6 +218,7 @@ const getEverything = async (value) => {
         Create User
         </Title>
         <Text><i>Start by creating a user to generate an auth code.</i></Text>
+        <br/>
         <Search placeholder="Create a User" style={{ width: 1300, margin: '0 10px' }} onSearch={createUser} />
         <br/>
         <br/>
@@ -210,6 +234,7 @@ const getEverything = async (value) => {
         Get New Auth Code for an Existing User
         </Title>
         <Text><i>Get a new auth code by username if the user already exists.</i></Text>
+        <br/>
         <Search placeholder="Enter user name to get code" style={{ width: 1300, margin: '0 10px' }} onSearch={authUser} />
         <br/>
         <br/>
@@ -224,6 +249,7 @@ const getEverything = async (value) => {
         Get Token from Auth Code
         </Title>
         <Text><i>Use the auth code generated above to generate a token that expires every hour.</i></Text>
+        <br/>
         <Search placeholder="Enter code to get token" style={{ width: 1300, margin: '0 10px' }} onSearch={authToken} />
         <br/>
         <br/>
@@ -238,6 +264,7 @@ const getEverything = async (value) => {
         Create Patient
         </Title>
         <Text><i>A patient needs to exist in the context of this API token to be retrievable from subsequent endpoints. Please create a patient here.</i></Text>
+        <br/>
         <Search placeholder="Get a patient" style={{ width: 1300, margin: '0 10px' }} onSearch={createPatient} />
         <br/>
         <br/>
@@ -252,6 +279,7 @@ const getEverything = async (value) => {
         Get Patient
         </Title>
         <Text><i>Return a patient that already exists in the context</i></Text>
+        <br/>
         <Search placeholder="Get a patient" style={{ width: 1300, margin: '0 10px' }} onSearch={getPatient} />
         <br/>
         <br/>
@@ -266,6 +294,7 @@ const getEverything = async (value) => {
         Get Everything About a Patient
         </Title>
         <Text><i>Return everything about a patient that already exists in the context. Use the patient ID, not name.</i></Text>
+        <br/>
         <Search placeholder="Query Everything about a Patient" style={{ width: 1300, margin: '0 10px' }} onSearch={getEverything} />
         <br/>
         <br/>
@@ -279,15 +308,28 @@ const getEverything = async (value) => {
         <Title>
         Connect to Provider
         </Title>
+        {/* <Button
+        onClick={saveToken}
+        > */}
         <Text>
-        <Link to={`${ROOT_API_URL}/connect/system/clinical/4707?client_id=${CLIENT_ID}&access_token=${token}`}>Connect Here</Link>
+        <a href={`${ROOT_API_URL}/connect/system/clinical/4707?client_id=${CLIENT_ID}&access_token=${token}`}>Connect Here</a>
         </Text>
+        {/* </Button> */}
         <br/>
         <br/>
-        <iframe src="https://fhir-myrecord.cerner.com/dstu2/ec2458f2-1e24-41c8-b71b-0e701af7583d"></iframe>
+        <Button
+        onClick={getPatientEHRData}
+        >
+        Show Patient Data
+        </Button>
+        <br/>
+        <Card>
+        <ReactJson src={patientEHRData}/>
         </Card>
         <br/>
-
+        <br/>
+        </Card>
+        <br/>
         </div>
         )
 }
