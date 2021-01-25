@@ -12,6 +12,7 @@ function App() {
     <Switch>
     <Route path="/requests" component={Requests} />
     <Route path="/about" component={About} />
+    <Redirect from="/" to="/requests" />
     </Switch>
     </AppLayout>
     </BrowserRouter>
