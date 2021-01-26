@@ -1,4 +1,4 @@
-from bottle import route, run, request, hook, abort
+from bottle import route, run, request, hook, abort, response
 import json
 from flask import jsonify
 import pprint
@@ -10,6 +10,10 @@ from config import CLIENT_ID, CLIENT_SECRET, ROOT_API_URL, FHIR_API_URL
 pp = pprint.PrettyPrinter(indent=4)
 
 REQUEST_HEADERS = {"accept": "application/json"}
+
+@hook('after_request')
+def enable_cors():
+    response.headers['Access-Control-Allow-Origin'] = '*'
 
 # Route to create a user
 @route('/api/create/<name>', method='GET')
