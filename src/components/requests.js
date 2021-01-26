@@ -31,6 +31,7 @@ const CLIENT_SECRET = `e52c028bd69b7dcfa3587e343d87f13f`;
 const CORS_ANYWHERE_URL = '';
 const ROOT_API_URL = `https://api.1up.health`;
 const FHIR_API_URL = `https://api.1up.health/fhir`;
+const PROXY_TOKEN_URL = `http://localhost:8080/api/token/`;
 
 
 const Requests = () => {
@@ -163,6 +164,24 @@ const Requests = () => {
            console.log(tokenData);
 
        });
+   }
+
+   // Get a token from the proxy server
+   const getProxyToken = async (value) => {
+     const config = {
+       headers: {
+         'Content-Type': 'application/json'
+       }
+     };
+
+     await axios.get(`${PROXY_TOKEN_URL}${value}`)
+     .then(response => {
+       console.log(response)
+       const data = response.data;
+       const token_string = response.data;
+       setToken(token_string);
+       setTokenData(data);
+     })
    }
 
     // Create a patient
@@ -312,6 +331,21 @@ const getEverything = async (value) => {
         <Text><i>Use the auth code generated above to generate a token that expires every hour.</i></Text>
         <br/>
         <Search placeholder="Enter code to get token" style={{ width: 1300, margin: '0 10px' }} onSearch={authToken} />
+        <br/>
+        <br/>
+        <br/>
+        <Card>
+        <JSONViewer json={tokenData}/>
+        </Card>
+        </Card>
+
+        <Card>
+        <Title>
+        Get Token with Auth Code from Proxy Server
+        </Title>
+        <Text><i>Use the auth code generated above to generate a token that expires every hour.</i></Text>
+        <br/>
+        <Search placeholder="Enter code to get token" style={{ width: 1300, margin: '0 10px' }} onSearch={getProxyToken} />
         <br/>
         <br/>
         <br/>

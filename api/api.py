@@ -1,5 +1,4 @@
-
-from bottle import route, run, request, hook, abort
+from bottle import route, run, request, hook, abort, response
 import json
 from flask import jsonify
 import pprint
@@ -11,6 +10,10 @@ from config import CLIENT_ID, CLIENT_SECRET, ROOT_API_URL, FHIR_API_URL
 pp = pprint.PrettyPrinter(indent=4)
 
 REQUEST_HEADERS = {"accept": "application/json"}
+
+@hook('after_request')
+def enable_cors():
+    response.headers['Access-Control-Allow-Origin'] = '*'
 
 # Route to create a user
 @route('/api/create/<name>', method='GET')
@@ -28,7 +31,8 @@ def create_user(name):
         code = json_data['code']
         print("CREATE USER RESPONSE: " + str(create_user_req.status_code))
         print(code)
-        return json.dumps(code)
+        assert(len(code) == 40)
+        return json.dumps(code).strip('"')
     except Exception as e:
         print(str(e))
 
@@ -48,7 +52,8 @@ def auth_token(code):
         token = json_data['access_token']
         print("ACCESS TOKEN RESPONSE: " + str(token_req.status_code))
         print(token)
-        return json.dumps(token)
+        assert(len(token) == 40)
+        return json.dumps(token).strip('"')
     except Exception as e:
         print(str(e))
 
