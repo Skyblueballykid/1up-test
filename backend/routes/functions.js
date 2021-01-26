@@ -9,7 +9,7 @@ const CLIENT_SECRET = `e52c028bd69b7dcfa3587e343d87f13f`;
 const ROOT_API_URL = `https://api.1up.health`;
 const FHIR_API_URL = `https://api.1up.health/fhir`;
 
-let email = "hello-world15";
+let email = "hello-world";
 
 function createUser() {
     let url = `${ROOT_API_URL}/user-management/v1/user`;
