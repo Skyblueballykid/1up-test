@@ -25,3 +25,6 @@ To run the backend express server, open a new terminal window and run:
 ### `yarn install`
 
 ### `PORT=3001 node bin/www`
+
+Express API routes:
+- Create user and generate an auth code
