@@ -28,7 +28,7 @@ def create_user(name):
         code = json_data['code']
         print("CREATE USER RESPONSE: " + str(create_user_req.status_code))
         print(code)
-        return json.dumps(code)
+        return json.dumps(code).strip('"')
     except Exception as e:
         print(str(e))
 
@@ -48,7 +48,7 @@ def auth_token(code):
         token = json_data['access_token']
         print("ACCESS TOKEN RESPONSE: " + str(token_req.status_code))
         print(token)
-        return json.dumps(token)
+        return json.dumps(token).strip('"')
     except Exception as e:
         print(str(e))
 
