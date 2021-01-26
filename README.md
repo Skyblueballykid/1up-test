@@ -21,7 +21,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Python API
 
-### `conda activate api'
+### `conda activate api`
 ### `python3 api.py`
 
 localhost:8080
