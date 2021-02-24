@@ -19,9 +19,9 @@ def enable_cors():
 @route('/api/create/<name>', method='GET')
 def create_user(name):
     CREATE_USER_PAYLOAD = {
-        "app_user_id": "%s" % name,
-        "client_id": "%s" % CLIENT_ID,
-        "client_secret": "%s" % CLIENT_SECRET
+        "app_user_id": f"{name}",
+        "client_id": f"{CLIENT_ID}",
+        "client_secret": f"{CLIENT_SECRET}" 
     }
 
     try:
@@ -40,10 +40,10 @@ def create_user(name):
 @route('/api/token/<code>', method='GET')
 def auth_token(code):
     TOKEN_PAYLOAD = {
-        "code": "%s" % code,
+        "code": f"{code}",
         "grant_type" : "authorization_code",
-        "client_id": "%s" % CLIENT_ID,
-        "client_secret": "%s" % CLIENT_SECRET
+        "client_id": f"{CLIENT_ID}",
+        "client_secret":  f"{CLIENT_SECRET}"
     }
     try:
         url= FHIR_API_URL + "/oauth2/token"
