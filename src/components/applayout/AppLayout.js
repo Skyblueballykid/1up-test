@@ -16,7 +16,7 @@ class AppLayout extends React.Component {
 
         <PageHeader
         className="site-page-header"
-        title="1up.Health Test App"
+        title="1up.Health Testing App"
         >
         </PageHeader>
 
@@ -50,7 +50,7 @@ class AppLayout extends React.Component {
             {this.props.children}
           </Content>
           </Layout>
-          <Footer style={{ textAlign: 'center' }}>1up.health Test App</Footer>
+          <Footer style={{ textAlign: 'center' }}>1up.health Testing App</Footer>
       </Layout>
     );
   }

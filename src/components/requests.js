@@ -21,12 +21,10 @@ const Text = styled(Typography.Text)`
 
 const { Search } = Input;
 
-// TODO: Use an express app route to store secrets
-const CLIENT_ID = `dbb2e596333400b55c417c0a1ac5187a`;
-const CLIENT_SECRET = `e52c028bd69b7dcfa3587e343d87f13f`;
+const REACT_APP_CLIENT_ID = process.env.REACT_APP_ONEUP_CLIENT_ID;
+const REACT_APP_CLIENT_SECRET = process.env.REACT_APP_ONEUP_CLIENT_SECRET;
 
-// use cors anywhere heroku app to avoid CORS issues in dev
-
+// use cors anywhere heroku app to avoid CORS issues in Dev. Might be slow
 // https://cors-anywhere.herokuapp.com/
 const CORS_ANYWHERE_URL = '';
 const ROOT_API_URL = `https://api.1up.health`;
@@ -80,6 +78,8 @@ const Requests = () => {
     const [patientIdentifier, setPatientIdentifier] = useState([]);
     const [patientMaritalStatus, setPatientMaritalStatus] =useState([]);
 
+    // Set provider ID for use in Connect API 
+    const [providerID, setProviderID] = useState('');
 
     useEffect(() => {
       const parsedToken = String(localStorage.getItem("token") || 0)
@@ -87,7 +87,6 @@ const Requests = () => {
     }, [])
 
     // Store the token in local storage. Never do this in prod
-    // TODO: Setup an express app to store the token
     useEffect(function persistToken() {
         localStorage.setItem('token', token);
     }, [token])
@@ -102,8 +101,8 @@ const Requests = () => {
 
        await axios.post(`${CORS_ANYWHERE_URL}${ROOT_API_URL}/user-management/v1/user`, {
            "app_user_id": value,
-           "client_id": `${CLIENT_ID}`,
-           "client_secret": `${CLIENT_SECRET}`
+           "client_id": `${REACT_APP_CLIENT_ID}`,
+           "client_secret": `${REACT_APP_CLIENT_SECRET}`
        }, 
        config).then((response) => {
            const data = response.data;
@@ -125,8 +124,8 @@ const Requests = () => {
 
         await axios.post(`${CORS_ANYWHERE_URL}${ROOT_API_URL}/user-management/v1/user/auth-code`, {
             "app_user_id": value,
-            "client_id": `${CLIENT_ID}`,
-            "client_secret": `${CLIENT_SECRET}`
+            "client_id": `${REACT_APP_CLIENT_ID}`,
+            "client_secret": `${REACT_APP_CLIENT_SECRET}`
         }, 
         config).then((response) => {
             const data = response.data;
@@ -151,8 +150,8 @@ const Requests = () => {
        await axios.post(`${CORS_ANYWHERE_URL}${FHIR_API_URL}/oauth2/token`, {
            "code": value,
            "grant_type" : "authorization_code",
-           "client_id": `${CLIENT_ID}`,
-           "client_secret": `${CLIENT_SECRET}`
+           "client_id": `${REACT_APP_CLIENT_ID}`,
+           "client_secret": `${REACT_APP_CLIENT_SECRET}`
        }, 
        config).then((response) => {
            const data = response.data;
@@ -339,7 +338,9 @@ const getEverything = async (value) => {
         </Card>
         </Card>
 
-        <Card>
+        {/* Uncomment this code if you set up the Proxy Server */}
+
+        {/* <Card>
         <Title>
         Get Token with Auth Code from Proxy Server
         </Title>
@@ -352,7 +353,7 @@ const getEverything = async (value) => {
         <Card>
         <JSONViewer json={tokenData}/>
         </Card>
-        </Card>
+        </Card> */}
 
         <Card>
         <Title>
@@ -406,8 +407,11 @@ const getEverything = async (value) => {
         {/* <Button
         onClick={saveToken}
         > */}
+        <Search placeholder="Enter a Provider ID...Be sure to click submit to input the provider ID you entered --->" style={{ width: 1300, margin: '0 10px' }} onSearch={setProviderID}/>
+        <br/> 
+        <br/>
         <Text>
-        <a href={`${ROOT_API_URL}/connect/system/clinical/4707?client_id=${CLIENT_ID}&access_token=${token}`}>Connect Here</a>
+        <a href={`${ROOT_API_URL}/connect/system/clinical/${providerID}?client_id=${REACT_APP_CLIENT_ID}&access_token=${token}`}>Connect Here</a>
         </Text>
         {/* </Button> */}
         <br/>
@@ -419,7 +423,9 @@ const getEverything = async (value) => {
         </Button>
         <br/>
         <Card>
-        <JSONViewer json={{officialName}}/>
+        {/* Remove this because it is a bit messy */}
+
+        {/* <JSONViewer json={{officialName}}/>
         <br/>
         <JSONViewer json={{ID}}/>
         <br/>
@@ -451,7 +457,7 @@ const getEverything = async (value) => {
         <JSONViewer json={{patientExtension2}}/>
         <br/>
         <JSONViewer json={{patientIdentifier}}/>
-        <br/>
+        <br/> */}
         <ReactJson src={patientEHRData}/>
         </Card>
         <br/>
