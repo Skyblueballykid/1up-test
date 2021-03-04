@@ -29,7 +29,7 @@ const REACT_APP_CLIENT_SECRET = process.env.REACT_APP_ONEUP_CLIENT_SECRET;
 const CORS_ANYWHERE_URL = '';
 const ROOT_API_URL = `https://api.1up.health`;
 const FHIR_API_URL = `https://api.1up.health/fhir`;
-const PROXY_TOKEN_URL = `http://localhost:8080/api/token/`;
+// const PROXY_TOKEN_URL = `http://localhost:8080/api/token/`;
 
 
 const Requests = () => {
@@ -39,7 +39,7 @@ const Requests = () => {
     const [userData, setUserData] = useState([]);
 
     //Code state
-    const[code, setUserCode] = useState('');
+    // const[code, setUserCode] = useState('');
     const [codeData, setCodeData] = useState([]);
 
     //Token state
@@ -58,25 +58,25 @@ const Requests = () => {
 
     // EHR data
     const [patientEHRData, setPatientEHRData] = useState([]);
-    const [officialName, setOfficialName] = useState('');
-    const [ID, setID] = useState('');
-    const [patientBirth, setPatientBirth] = useState('');
-    const [patientGender, setPatientGender] = useState('');
-    const [patientAddress, setPatientAddress] = useState([]);
-    const [patientCareProvider, setPatientCareProvider] = useState([]);
-    const [patientCommunication, setPatientCommunication] = useState([]);
-    const [patientContactName, setPatientContact1] = useState([]);
-    const [patientContactAddress, setPatientContact2] = useState([]);
-    const [patientContactGender, setPatientContact3] = useState([]);
-    const [patientContactDate, setPatientContact4] = useState([]);  
-    const [patientContactRelation, setPatientContact5] = useState([]);
-    const [patientContactTelecom, setPatientContact6] = useState([]);    
-    const [patientExtension1, setPatientExtension1] = useState([]);
-    const [patientExtension2, setPatientExtension2] = useState([]);
-    const [patientName, setPatientName] = useState([]);
-    const [patientTelecom, setPatientTelecom] = useState([]);
-    const [patientIdentifier, setPatientIdentifier] = useState([]);
-    const [patientMaritalStatus, setPatientMaritalStatus] =useState([]);
+    // const [officialName, setOfficialName] = useState('');
+    // const [ID, setID] = useState('');
+    // const [patientBirth, setPatientBirth] = useState('');
+    // const [patientGender, setPatientGender] = useState('');
+    // const [patientAddress, setPatientAddress] = useState([]);
+    // const [patientCareProvider, setPatientCareProvider] = useState([]);
+    // const [patientCommunication, setPatientCommunication] = useState([]);
+    // const [patientContactName, setPatientContact1] = useState([]);
+    // const [patientContactAddress, setPatientContact2] = useState([]);
+    // const [patientContactGender, setPatientContact3] = useState([]);
+    // const [patientContactDate, setPatientContact4] = useState([]);  
+    // const [patientContactRelation, setPatientContact5] = useState([]);
+    // const [patientContactTelecom, setPatientContact6] = useState([]);    
+    // const [patientExtension1, setPatientExtension1] = useState([]);
+    // const [patientExtension2, setPatientExtension2] = useState([]);
+    // const [patientName, setPatientName] = useState([]);
+    // const [patientTelecom, setPatientTelecom] = useState([]);
+    // const [patientIdentifier, setPatientIdentifier] = useState([]);
+    // const [patientMaritalStatus, setPatientMaritalStatus] =useState([]);
 
     // Set provider ID for use in Connect API 
     const [providerID, setProviderID] = useState('');
@@ -130,7 +130,7 @@ const Requests = () => {
         config).then((response) => {
             const data = response.data;
             const code = response.data.code;
-            setUserCode(code);
+            // setUserCode(code);
             setCodeData(data);
             console.log(response);
             console.log(code);
@@ -166,22 +166,22 @@ const Requests = () => {
    }
 
    // Get a token from the proxy server
-   const getProxyToken = async (value) => {
-     const config = {
-       headers: {
-         'Content-Type': 'application/json'
-       }
-     };
+  //  const getProxyToken = async (value) => {
+  //    const config = {
+  //      headers: {
+  //        'Content-Type': 'application/json'
+  //      }
+  //    };
 
-     await axios.get(`${PROXY_TOKEN_URL}${value}`)
-     .then(response => {
-       console.log(response)
-       const data = response.data;
-       const token_string = response.data;
-       setToken(token_string);
-       setTokenData(data);
-     })
-   }
+  //    await axios.get(`${PROXY_TOKEN_URL}${value}`)
+  //    .then(response => {
+  //      console.log(response)
+  //      const data = response.data;
+  //      const token_string = response.data;
+  //      setToken(token_string);
+  //      setTokenData(data);
+  //    })
+  //  }
 
     // Create a patient
    const createPatient = async (value) => {
@@ -245,47 +245,47 @@ const getEverything = async (value) => {
     .then(response => {
       console.log(response);
       const data = response.data;
-      const address = data.entry[0].resource.address[0];
-      const name = data.entry[0].resource.name;
-      const officialName = data.entry[0].resource.name[0];
-      const id = data.entry[0].resource.id;
-      const extension1 = data.entry[0].resource.extension[0].extension;
-      const extension2 = data.entry[0].resource.extension[1].extension;
-      const gender = data.entry[0].resource.gender;
-      const maritalStatus = data.entry[0].resource.maritalStatus;
-      const telecom = data.entry[0].resource.telecom;
-      const identifier = data.entry[0].resource.identifier;
-      const birth = data.entry[0].resource.birthDate;
-      const contactName = data.entry[0].resource.contact[0].name;
-      const contactAddress = data.entry[0].resource.contact[0].address;
-      const contactGender = data.entry[0].resource.contact[0].gender;
-      const contactPeriod = data.entry[0].resource.contact[0].period;
-      const contactRelation = data.entry[0].resource.contact[0].relationship;
-      const contactTelecom = data.entry[0].resource.contact[0].telecom; 
-      const careProvider = data.entry[0].resource.careProvider;
-      const communication = data.entry[0].resource.communication[0];
+      // const address = data.entry[0].resource.address[0];
+      // const name = data.entry[0].resource.name;
+      // const officialName = data.entry[0].resource.name[0];
+      // const id = data.entry[0].resource.id;
+      // const extension1 = data.entry[0].resource.extension[0].extension;
+      // const extension2 = data.entry[0].resource.extension[1].extension;
+      // const gender = data.entry[0].resource.gender;
+      // const maritalStatus = data.entry[0].resource.maritalStatus;
+      // const telecom = data.entry[0].resource.telecom;
+      // const identifier = data.entry[0].resource.identifier;
+      // const birth = data.entry[0].resource.birthDate;
+      // const contactName = data.entry[0].resource.contact[0].name;
+      // const contactAddress = data.entry[0].resource.contact[0].address;
+      // const contactGender = data.entry[0].resource.contact[0].gender;
+      // const contactPeriod = data.entry[0].resource.contact[0].period;
+      // const contactRelation = data.entry[0].resource.contact[0].relationship;
+      // const contactTelecom = data.entry[0].resource.contact[0].telecom; 
+      // const careProvider = data.entry[0].resource.careProvider;
+      // const communication = data.entry[0].resource.communication[0];
       setPatientEHRData(data);
-      setPatientName(name);
-      setOfficialName(officialName);
-      setPatientTelecom(telecom);
-      setPatientContact1(contactName);
-      setPatientContact2(contactAddress);
-      setPatientContact3(contactGender);
-      setPatientContact4(contactPeriod);
-      setPatientContact5(contactRelation);
-      setPatientContact6(contactTelecom);
-      setPatientAddress(address);
-      setPatientIdentifier(identifier);
-      setPatientBirth(birth);
-      setID(id);
-      setPatientGender(gender);
-      setPatientMaritalStatus(maritalStatus);
-      setPatientExtension1(extension1);
-      setPatientExtension2(extension2);
-      setPatientCareProvider(careProvider);
-      setPatientCommunication(communication);
-      console.log(response);
-      console.log(patientContactName);
+      // setPatientName(name);
+      // setOfficialName(officialName);
+      // setPatientTelecom(telecom);
+      // setPatientContact1(contactName);
+      // setPatientContact2(contactAddress);
+      // setPatientContact3(contactGender);
+      // setPatientContact4(contactPeriod);
+      // setPatientContact5(contactRelation);
+      // setPatientContact6(contactTelecom);
+      // setPatientAddress(address);
+      // setPatientIdentifier(identifier);
+      // setPatientBirth(birth);
+      // setID(id);
+      // setPatientGender(gender);
+      // setPatientMaritalStatus(maritalStatus);
+      // setPatientExtension1(extension1);
+      // setPatientExtension2(extension2);
+      // setPatientCareProvider(careProvider);
+      // setPatientCommunication(communication);
+      // console.log(response);
+      // console.log(patientContactName);
     });
 }
 
