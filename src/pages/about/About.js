@@ -20,11 +20,10 @@ const About = () => {
   return (
     <StyledDiv>
         <Title>
-        Thomas J Kalnik
+        App for Testing 1upHealth Requests
         </Title>
-        <Text>kalnik.thomas@gmail.com</Text>
-        <br/>
-        <Text>845.807.3052</Text>
+
+        <Text>Not secure because it caches the access token in the browser, but does include this funky SVG square. </Text>        
         <br/>
         <br/>
         <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
@@ -40,6 +39,11 @@ const About = () => {
         <path d="M 50 50 h 1 v 1 h -1 Z" fill="transparent" stroke="black"/>
         
         </svg>
+        <Text>
+          <br/>
+          <br/>
+        Use strictly for internal testing of API endpoints.
+        </Text>
     </StyledDiv>
   );
 };
