@@ -95,7 +95,8 @@ const Requests = () => {
     const createUser = async (value) => {
        const config = {
            headers: {
-             'Content-Type': 'application/json'
+             'Content-Type': 'application/json',
+             'Access-Control-Allow-Origin': '*'
            }
          };
 
@@ -118,7 +119,8 @@ const Requests = () => {
     const authUser = async (value) => {
         const config = {
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
             }
           };
 
@@ -143,7 +145,8 @@ const Requests = () => {
     const authToken = async (value) => {
        const config = {
            headers: {
-             'Content-Type': 'application/json'
+             'Content-Type': 'application/json',
+             'Access-Control-Allow-Origin': '*'
            }
          };
 
@@ -188,7 +191,8 @@ const Requests = () => {
    const config = {
        headers: {
          'Content-Type': 'application/json',
-         "Authorization" : `Bearer ${token}`
+         "Authorization" : `Bearer ${token}`,
+         'Access-Control-Allow-Origin': '*'
        }
      };
 
@@ -210,7 +214,7 @@ const getPatient = (value, props) => {
     axios({
       url: `${CORS_ANYWHERE_URL}${FHIR_API_URL}/dstu2/Patient/${value}`,
       method: 'get',
-      headers: {"Authorization" : `Bearer ${token}`}
+      headers: {"Authorization" : `Bearer ${token}`, 'Access-Control-Allow-Origin': '*'}
     })
       .then(response => {
         console.log(response);
@@ -225,7 +229,7 @@ const getPatient = (value, props) => {
 
 // Get everything about a patient from a patient ID
 const getEverything = async (value) => {
-    await axios.get(`${CORS_ANYWHERE_URL}${FHIR_API_URL}/dstu2/Patient/${value}/$everything`, { headers: {"Authorization" : `Bearer ${token}`}})
+    await axios.get(`${CORS_ANYWHERE_URL}${FHIR_API_URL}/dstu2/Patient/${value}/$everything`, { headers: {"Authorization" : `Bearer ${token}`, 'Access-Control-Allow-Origin': '*'}})
     .then((response) => {
          const data = response.data;
          console.log(response);
@@ -240,7 +244,7 @@ const getEverything = async (value) => {
   axios({
     url: `${CORS_ANYWHERE_URL}${FHIR_API_URL}/dstu2/Patient`,
     method: 'get',
-    headers: {"Authorization" : `Bearer ${token}`}
+    headers: {"Authorization" : `Bearer ${token}`, 'Access-Control-Allow-Origin': '*'}
   })
     .then(response => {
       console.log(response);
