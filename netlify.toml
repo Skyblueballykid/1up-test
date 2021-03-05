@@ -1,0 +1,7 @@
+[[redirects]]
+  from = "/cors-proxy/*"
+  to = ""
+  status = 200
+  force = true
+
+

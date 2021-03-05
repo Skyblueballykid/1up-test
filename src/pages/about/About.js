@@ -23,7 +23,7 @@ const About = () => {
         App for Testing 1upHealth Requests
         </Title>
 
-        <Text>Not secure because it caches the access token in the browser, but does include this funky SVG square. </Text>        
+        <Text>Not secure because it caches the access token in the browser. </Text>        
         <br/>
         <br/>
         <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
@@ -40,7 +40,6 @@ const About = () => {
         
         </svg>
         <Text>
-          <br/>
           <br/>
         Use strictly for internal testing of API endpoints.
         </Text>
