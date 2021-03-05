@@ -27,8 +27,8 @@ const REACT_APP_CLIENT_SECRET = process.env.REACT_APP_ONEUP_CLIENT_SECRET;
 // use cors anywhere heroku app to avoid CORS issues in Dev. Might be slow
 // https://cors-anywhere.herokuapp.com/
 const CORS_ANYWHERE_URL = 'https://cors-anywhere.herokuapp.com';
-const ROOT_API_URL = `/cors-proxy/https://api.1up.health`;
-const FHIR_API_URL = `/cors-proxy/https://api.1up.health/fhir`;
+const ROOT_API_URL = `https://api.1up.health`;
+const FHIR_API_URL = `https://api.1up.health/fhir`;
 // const PROXY_TOKEN_URL = `http://localhost:8080/api/token/`;
 
 
