@@ -26,7 +26,7 @@ const REACT_APP_CLIENT_SECRET = process.env.REACT_APP_ONEUP_CLIENT_SECRET;
 
 // use cors anywhere heroku app to avoid CORS issues in Dev. Might be slow
 // https://cors-anywhere.herokuapp.com/
-const CORS_ANYWHERE_URL = 'https://thingproxy.freeboard.io/fetch/';
+const CORS_ANYWHERE_URL = '';
 const ROOT_API_URL = `https://api.1up.health`;
 const FHIR_API_URL = `https://api.1up.health/fhir`;
 // const PROXY_TOKEN_URL = `http://localhost:8080/api/token/`;
@@ -95,8 +95,7 @@ const Requests = () => {
     const createUser = async (value) => {
        const config = {
            headers: {
-             'Content-Type': 'application/json',
-             'Access-Control-Allow-Origin': '*'
+             'Content-Type': 'application/json'
            }
          };
 
@@ -119,8 +118,7 @@ const Requests = () => {
     const authUser = async (value) => {
         const config = {
             headers: {
-              'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin': '*'
+              'Content-Type': 'application/json'
             }
           };
 
@@ -145,8 +143,7 @@ const Requests = () => {
     const authToken = async (value) => {
        const config = {
            headers: {
-             'Content-Type': 'application/json',
-             'Access-Control-Allow-Origin': '*'
+             'Content-Type': 'application/json'
            }
          };
 
@@ -191,8 +188,7 @@ const Requests = () => {
    const config = {
        headers: {
          'Content-Type': 'application/json',
-         "Authorization" : `Bearer ${token}`,
-         'Access-Control-Allow-Origin': '*'
+         "Authorization" : `Bearer ${token}`
        }
      };
 
@@ -214,7 +210,7 @@ const getPatient = (value, props) => {
     axios({
       url: `${CORS_ANYWHERE_URL}${FHIR_API_URL}/dstu2/Patient/${value}`,
       method: 'get',
-      headers: {"Authorization" : `Bearer ${token}`, 'Access-Control-Allow-Origin': '*'}
+      headers: {"Authorization" : `Bearer ${token}`}
     })
       .then(response => {
         console.log(response);
@@ -229,7 +225,7 @@ const getPatient = (value, props) => {
 
 // Get everything about a patient from a patient ID
 const getEverything = async (value) => {
-    await axios.get(`${CORS_ANYWHERE_URL}${FHIR_API_URL}/dstu2/Patient/${value}/$everything`, { headers: {"Authorization" : `Bearer ${token}`, 'Access-Control-Allow-Origin': '*'}})
+    await axios.get(`${CORS_ANYWHERE_URL}${FHIR_API_URL}/dstu2/Patient/${value}/$everything`, { headers: {"Authorization" : `Bearer ${token}`}})
     .then((response) => {
          const data = response.data;
          console.log(response);
@@ -244,7 +240,7 @@ const getEverything = async (value) => {
   axios({
     url: `${CORS_ANYWHERE_URL}${FHIR_API_URL}/dstu2/Patient`,
     method: 'get',
-    headers: {"Authorization" : `Bearer ${token}`, 'Access-Control-Allow-Origin': '*'}
+    headers: {"Authorization" : `Bearer ${token}`}
   })
     .then(response => {
       console.log(response);
