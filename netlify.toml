@@ -1,6 +1,6 @@
 [[redirects]]
-  from = "/cors-proxy/*"
-  to = ""
+  from = "*"
+  to = "https://api.1up.health"
   status = 200
   force = true
 
