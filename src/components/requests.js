@@ -293,6 +293,19 @@ const getEverything = async (value) => {
     return(
         <div>
         <Card>
+        <Title>General Instructions</Title>
+        <Text>To use for testing the connect API, an access token needs to be cached in local storage. This only needs to be done once per session. To do this:</Text>
+        <br/>
+        <Text>1. Create a new user</Text>
+        <br/>
+        <Text>2. Copy the access code returned from the new user into the Get Token from Auth Code</Text>
+        <br/>
+        <Text>3. Now the connect API will work (it will read the access token from browser local storage)</Text>
+        <br/>
+        <Text><b>Note:</b> Be sure to click submit after entering the Provider ID (before clicking Connect Here) otherwise the ID will not get cached.</Text>
+      </Card>
+      <br/>
+        <Card>
         <Title>
         Create User
         </Title>
