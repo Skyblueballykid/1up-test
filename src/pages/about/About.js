@@ -23,12 +23,6 @@ const About = () => {
         App for Testing 1upHealth Requests
         </Title>
 
-        <iframe src="https://system-search.1up.health/search?access_token=e2f2883a82e4eba04a3dfaa878fcd9074d8b952b" height="500" width="100%"/>
-
-        {/* <iframe
-        height="500" width="100%"
-        src="https://api.1up.health/connect/system/clinical?client_id=2ea2ff3e6765988e9c227b60a4bc5ec5&client_secret=22a3ee87ae7904a4c51c5b8a89b972f7"
-        /> */}
 
         <Text>Not secure because it caches the access token in the browser. </Text>        
         <br/>
@@ -50,6 +44,22 @@ const About = () => {
           <br/>
         Use strictly for internal testing of API endpoints.
         </Text>
+        <br/>
+        <br/>
+        <Text>Sample Provider Search iFrame</Text>
+        <iframe title="provider search" 
+         height="400"
+         width="100%"
+        src="https://system-search.1up.health/search?access_token=e2f2883a82e4eba04a3dfaa878fcd9074d8b952b"/>
+        <br/>
+        <br/>
+        <Text>Sample Clinical Search iFrame</Text>
+        <iframe
+        title="clinical search"
+        height="300" 
+        width="100%"
+        src="https://api.1up.health/connect/system/clinical?client_id=2ea2ff3e6765988e9c227b60a4bc5ec5&client_secret=22a3ee87ae7904a4c51c5b8a89b972f7"
+        />
     </StyledDiv>
   );
 };
